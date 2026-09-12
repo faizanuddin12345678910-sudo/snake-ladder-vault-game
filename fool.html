@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Fool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .fool-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .fool-text {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 10vw;
+            font-weight: 900;
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.8),
+                        0 0 40px rgba(255, 0, 0, 0.6),
+                        0 0 60px rgba(255, 0, 0, 0.4);
+            animation: glitch 0.15s infinite, pulse 2s infinite;
+            letter-spacing: 0.1em;
+            margin-bottom: 40px;
+        }
+
+        .fool-text.alternate {
+            animation: glitch-alt 0.15s infinite, pulse 2s infinite;
+        }
+
+        .subtext {
+            font-family: 'Arial', sans-serif;
+            font-size: 1.5em;
+            color: #ff6600;
+            margin-top: 30px;
+            text-shadow: 0 0 10px rgba(255, 102, 0, 0.8);
+            animation: fadeInOut 3s infinite;
+        }
+
+        .emoji {
+            font-size: 5vw;
+            animation: rotate 3s infinite linear, bounce 2s infinite ease-in-out;
+            margin: 30px 0;
+            display: inline-block;
+        }
+
+        .play-again-btn {
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            color: white;
+            border: 3px solid #ff0000;
+            padding: 20px 50px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 40px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .play-again-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #00ccff 0%, #0099cc 100%);
+            color: white;
+            border: 3px solid #00ccff;
+            padding: 20px 50px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-left: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+        }
+
+        .share-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(0, 204, 255, 0.8);
+        }
+
+        .background-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.1) 0%, transparent 70%),
+                        radial-gradient(circle at 20% 80%, rgba(255, 102, 0, 0.05) 0%, transparent 70%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 0, 0, 0.05) 0%, transparent 70%);
+            animation: shift 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(255, 0, 0, 0.8),
+                            0 0 40px rgba(255, 0, 0, 0.6),
+                            0 0 60px rgba(255, 0, 0, 0.4);
+                transform: translate(0);
+            }
+            20% {
+                text-shadow: -3px 0 20px rgba(255, 0, 0, 0.8),
+                            3px 0 40px rgba(255, 102, 0, 0.6);
+                transform: translate(-3px, 0);
+            }
+            40% {
+                text-shadow: 3px 0 20px rgba(255, 0, 0, 0.8),
+                            -3px 0 40px rgba(255, 102, 0, 0.6);
+                transform: translate(3px, 0);
+            }
+            60% {
+                text-shadow: -2px 0 20px rgba(255, 0, 0, 0.8),
+                            2px 0 40px rgba(255, 102, 0, 0.6);
+                transform: translate(-2px, 0);
+            }
+            80% {
+                text-shadow: 2px 0 20px rgba(255, 0, 0, 0.8),
+                            -2px 0 40px rgba(255, 102, 0, 0.6);
+                transform: translate(2px, 0);
+            }
+        }
+
+        @keyframes glitch-alt {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(255, 102, 0, 0.8);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes shift {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .fool-text {
+                font-size: 15vw;
+            }
+
+            .emoji {
+                font-size: 10vw;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .play-again-btn,
+            .share-btn {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-effect"></div>
+
+    <div class="fool-container">
+        <div class="emoji">😂</div>
+        <div class="fool-text">YOU</div>
+        <div class="fool-text alternate">FOOL</div>
+        <p class="subtext">You've been pranked! 🎉</p>
+
+        <div class="button-container">
+            <button class="play-again-btn" onclick="playAgain()">Play Again</button>
+            <button class="share-btn" onclick="shareGame()">📤 Share Game</button>
+        </div>
+    </div>
+
+    <script>
+        function playAgain() {
+            window.location.href = 'index.html';
+        }
+
+        function shareGame() {
+            const gameUrl = window.location.origin + window.location.pathname.replace('fool.html', 'index.html');
+            const text = `🎮 You've been fooled! Play this prank Snake & Ladder game and see if you can complete all challenges without getting pranked! 😂\n\n${gameUrl}`;
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(gameUrl).then(() => {
+                alert('Game link copied to clipboard!\n\n' + gameUrl);
+            }).catch(() => {
+                // Fallback if clipboard API fails
+                const textarea = document.createElement('textarea');
+                textarea.value = gameUrl;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Game link copied to clipboard!\n\n' + gameUrl);
+            });
+
+            // Try to share via native share API if available
+            if (navigator.share) {
+                navigator.share({
+                    title: '🐍 Snake & Ladder Prank Game',
+                    text: text,
+                    url: gameUrl
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake and Ladder Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .game-wrapper {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 2px;
+            background: #ddd;
+            padding: 10px;
+            border-radius: 10px;
+            width: 500px;
+            height: 500px;
+        }
+
+        .cell {
+            background: #f0f0f0;
+            border: 2px solid #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .cell:hover {
+            background: #e8e8e8;
+        }
+
+        .cell.ladder {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            border-color: #4CAF50;
+        }
+
+        .cell.snake {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            border-color: #f44336;
+        }
+
+        .player {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .player.p1 {
+            background: #FF6B6B;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .player.p2 {
+            background: #4ECDC4;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 250px;
+        }
+
+        .info-panel {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .info-panel h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .player-info {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .player-info.active {
+            border-left: 4px solid #FFD700;
+            background: #fffacd;
+        }
+
+        .dice-container {
+            text-align: center;
+        }
+
+        .dice {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border: 3px solid #333;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            margin: 10px auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .dice:hover:not(.disabled) {
+            transform: scale(1.1);
+        }
+
+        .dice.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message.winner {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        @media (max-width: 768px) {
+            .board {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1;
+            }
+
+            .game-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐍 Snake & Ladder Game 🎲</h1>
+        <div class="game-wrapper">
+            <div class="board" id="board"></div>
+            <div class="sidebar">
+                <div class="info-panel">
+                    <h3>Game Info</h3>
+                    <div class="player-info active" id="p1-info">
+                        <span style="color: #FF6B6B;">● Player 1:</span> Position <strong id="p1-pos">1</strong>
+                    </div>
+                    <div class="player-info" id="p2-info">
+                        <span style="color: #4ECDC4;">● Player 2:</span> Position <strong id="p2-pos">1</strong>
+                    </div>
+                </div>
+
+                <div class="info-panel">
+                    <h3>Dice Roll</h3>
+                    <div class="dice-container">
+                        <div class="dice" id="dice">🎲</div>
+                        <button id="rollBtn" onclick="rollDice()">Roll Dice</button>
+                    </div>
+                </div>
+
+                <div class="message" id="message">Game Started! Player 1's turn</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

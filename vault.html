@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault Pattern Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .vault-container {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(52, 152, 219, 0.1);
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            border: 3px solid #3498db;
+            text-align: center;
+        }
+
+        h1 {
+            color: #3498db;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        .subtitle {
+            color: #ecf0f1;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+        }
+
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px;
+            margin: 40px auto;
+            justify-content: center;
+        }
+
+        .pattern-button {
+            width: 100px;
+            height: 100px;
+            border: 3px solid #3498db;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: #3498db;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .pattern-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+        }
+
+        .pattern-button.selected {
+            background: #3498db;
+            color: #0f3460;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.8);
+            transform: scale(1.08);
+        }
+
+        .pattern-button.correct {
+            background: #27ae60;
+            border-color: #27ae60;
+            color: white;
+            animation: pulse 0.5s ease;
+        }
+
+        .pattern-button.wrong {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            color: white;
+            animation: shake 0.5s ease;
+        }
+
+        .info {
+            color: #ecf0f1;
+            margin: 20px 0;
+            font-size: 1.1em;
+            min-height: 30px;
+        }
+
+        .selected-pattern {
+            background: rgba(52, 152, 219, 0.2);
+            border: 2px solid #3498db;
+            padding: 15px;
+            border-radius: 10px;
+            color: #3498db;
+            margin: 20px 0;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .hint {
+            color: #f39c12;
+            margin: 15px 0;
+            font-size: 0.95em;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="vault-container">
+        <h1>🔐 Vault Challenge 🔐</h1>
+        <p class="subtitle">Find the correct pattern to unlock the vault!</p>
+        <p class="hint">Click on the numbers in the correct sequence: 1 → 2 → 3</p>
+
+        <div class="selected-pattern" id="selectedPattern">No pattern selected</div>
+
+        <div class="pattern-grid" id="patternGrid"></div>
+
+        <div class="info" id="info">Select the correct sequence</div>
+
+        <button class="submit-btn" id="submitBtn" onclick="submitPattern()">Submit Pattern</button>
+        <button class="submit-btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); margin-left: 10px;" onclick="resetPattern()">Reset</button>
+    </div>
+
+    <script src="vault.js"></script>
+</body>
+</html>
